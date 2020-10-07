@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Challenge API Status 1`] = `
+Object {
+  "status": "Ok!",
+}
+`;
+
+exports[`Test Challenge Get user by id (happy path) 1`] = `
+Object {
+  "_id": "5f7e0b7e27b5e689c1bc4095",
+  "about": "Consequat laboris consequat labore nisi pariatur aliquip do deserunt excepteur incididunt ut laboris voluptate. Incididunt elit ex proident dolor id anim minim commodo. Magna amet adipisicing ipsum labore adipisicing sint. Do voluptate cupidatat dolor in aliquip.",
+  "address": "747 Glendale Court, Frank, Louisiana, 2381",
+  "age": 39,
+  "balance": "$3,530.12",
+  "company": "URBANSHEE",
+  "email": "cardenas.dorsey@urbanshee.io",
+  "eyeColor": "green",
+  "favoriteFruit": "apple",
+  "friends": Array [
+    Object {
+      "id": 0,
+      "name": "Sheryl Blevins",
+    },
+    Object {
+      "id": 1,
+      "name": "Sally Fisher",
+    },
+    Object {
+      "id": 2,
+      "name": "Britt Sharpe",
+    },
+  ],
+  "greeting": "Hello, Cardenas! You have 9 unread messages.",
+  "guid": "cf03de70-2718-42f5-b139-e78cbb29bab5",
+  "index": 25,
+  "isActive": true,
+  "latitude": "79.418762",
+  "longitude": "62.120286",
+  "name": Object {
+    "first": "Cardenas",
+    "last": "Dorsey",
+  },
+  "phone": "+1 (889) 415-3532",
+  "picture": "http://placehold.it/32x32",
+  "range": Array [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+  ],
+  "registered": "Friday, February 6, 2015 7:35 PM",
+  "tags": Array [
+    "qui",
+    "fugiat",
+    "labore",
+    "et",
+    "anim",
+  ],
+}
+`;
+
+exports[`Test Challenge Get user by id 1`] = `
+Object {
+  "_id": "5f7e0b7e27b5e689c1bc4095",
+  "about": "Consequat laboris consequat labore nisi pariatur aliquip do deserunt excepteur incididunt ut laboris voluptate. Incididunt elit ex proident dolor id anim minim commodo. Magna amet adipisicing ipsum labore adipisicing sint. Do voluptate cupidatat dolor in aliquip.",
+  "address": "747 Glendale Court, Frank, Louisiana, 2381",
+  "age": 39,
+  "balance": "$3,530.12",
+  "company": "URBANSHEE",
+  "email": "cardenas.dorsey@urbanshee.io",
+  "eyeColor": "green",
+  "favoriteFruit": "apple",
+  "friends": Array [
+    Object {
+      "id": 0,
+      "name": "Sheryl Blevins",
+    },
+    Object {
+      "id": 1,
+      "name": "Sally Fisher",
+    },
+    Object {
+      "id": 2,
+      "name": "Britt Sharpe",
+    },
+  ],
+  "greeting": "Hello, Cardenas! You have 9 unread messages.",
+  "guid": "cf03de70-2718-42f5-b139-e78cbb29bab5",
+  "index": 25,
+  "isActive": true,
+  "latitude": "79.418762",
+  "longitude": "62.120286",
+  "name": Object {
+    "first": "Cardenas",
+    "last": "Dorsey",
+  },
+  "phone": "+1 (889) 415-3532",
+  "picture": "http://placehold.it/32x32",
+  "range": Array [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+  ],
+  "registered": "Friday, February 6, 2015 7:35 PM",
+  "tags": Array [
+    "qui",
+    "fugiat",
+    "labore",
+    "et",
+    "anim",
+  ],
+}
+`;

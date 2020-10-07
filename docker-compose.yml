@@ -1,0 +1,27 @@
+version: '3.5'
+services:
+  src:
+    build:
+      context: src/
+    volumes:
+      - ./src:/app
+      - /app/node_modules
+    ports:
+      - '3000:3000'
+    links:
+      - api
+    depends_on:
+      - api
+
+  api:
+    build:
+      context: api/
+    volumes:
+      - ./api:/app
+      - /app/node_modules
+    ports:
+      - '8000:8000'
+    # environment:
+    #   - POSTGRES_USER=postgres
+    #   - POSTGRES_DB=commando
+    #   - POSTGRES_PASSWORD=example
