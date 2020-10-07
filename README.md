@@ -19,7 +19,7 @@ Puedes explorar las pruebas para conocer un poco sobre el funcionamiento esperad
 
 ### Sample data
 
-```json
+```js
 [{
   "_id": "5f7e0c4bc17a34141a957b59",
   "index": 0,
@@ -66,6 +66,7 @@ Entre mas extra points agregues mejor sera la calificacion.
 - Incluir cache y/o optimizacion sobre las busquedas
 - Complementar los test
 - Entender y apegarce al code style
+- Commis constantes y claros
 
 ### Ejecutar el entorno
 
@@ -80,3 +81,8 @@ docker ps # para ver el id con contenerdor `backend-challenge_src`
 docker exec -it container_id bash
 npm run test
 ```
+### Proceso de entrega
+
+- Primero debera crear un fork del este repositorio
+- Trabajar y mandar commits constante al repositorio en personal
+- Mandor un pull request al repo original
