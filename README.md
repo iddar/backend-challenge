@@ -71,7 +71,8 @@ Entre mas extra points agregues mejor sera la calificacion.
 ### Ejecutar el entorno
 
 ```sh
-git clone https://
+# antes de iniciar crea un fork del proyecto
+git clone https://github.com/{{githubuser}}/backend-challenge
 cd backend-challenge
 docker-compose build
 docker-compose up
