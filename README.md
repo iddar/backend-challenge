@@ -86,4 +86,5 @@ npm run test
 
 - Primero debera crear un fork del este repositorio
 - Trabajar y mandar commits constante al repositorio en personal
-- Mandor un pull request al repo original
+- Mandor un pull request al repo original (punstos extra)
+- Mandar la direccion de tu fork (el repo en tu usuario)
