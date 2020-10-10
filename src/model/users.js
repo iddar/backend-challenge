@@ -14,12 +14,12 @@ class Users {
     }
 
     if (registered) {
-      filters.registeredDate = new Date(registered);
+      filters.registered = new Date(registered);
     }
 
     return {
       ...data,
-      ...filters
+      filters
     };
   }
 
@@ -51,11 +51,11 @@ class Users {
       cursor && await cursor.close();
     }
 
-    return results;
+    return results.map(({ filters, ...r }) => r);
   }
 
   filterQuery(filters){
-    const fields = { 'friends': 'friends.name', 'id': '_id', 'registered': 'registeredDate' };
+    const fields = { 'friends': 'friends.name', 'id': '_id', 'registered': 'filters.registered', 'geozone' : 'filters.geozone' };
     const types = { 'geozone': 'geo', 'registered': 'date' };
 
     const geoStrategy = (key, value, type) => {

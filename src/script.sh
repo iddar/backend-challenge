@@ -8,5 +8,5 @@ case $RUN_MODE in
 		done
 		;;
 	*)
-		npm run dev
+		npm run test && npm run dev
 esac
