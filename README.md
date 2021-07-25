@@ -1,21 +1,21 @@
 # Backend Challenge
 
-Crear un servicio en el cual se permita filtra los datos obtenidos desde un API externa la cual no permite filtrado de ningun tipo, lo datos de esta misma se actualizan cada N horas, en la actualizacion pueden desaparecer o agregarce elementos.
+Create a service to allowed to filter the data obtained from an external API that does not allow the filter of any kind, the data of this is updated every N hours, in the update they can disappear or add elements.
 
-Tomando como base el ejemplo crear crear los filtros por cada una de estas categorias `id`, `eyeColor`, `tags`,
+Based on the example build filters for each of these categories id, eyeColor, tags,
 
-Para completar el ejecicio se deve trabajar sobre el folder `./src` se pueden agregar tantos archivos y dependencias como se requiera. De igual forma se pueden agregar imagenes al dockerfile de ser requerido algun servicio ej: bases de datos.
+To complete the execution, you must work on the ./src folder, you can add as many files and dependencies as required. In the same way, images can be added to the Dockerfile if a service is required, eg databases.
 
-Puedes incluir bases de datos, cronjobs, systemscripts etc. de ser necesarios, lo importante es brindar velocidad en el filtrado, datos actualizados y consistentes.
+It can include databases, cronjobs, system scripts, etc. if necessary, the important thing is to provide filtering speed, up-to-date and consistent data.
 
 ### URLs
 
-Se debe completar el codigo base para que las siguientes URLs funcionen de manera correcta, el primero retorna un unico elemento, el segundo todas las coincidencias
+The base code must be completed for the following URLs to work correctly, the first returns a single element, the second all matches.
 
 - `/users/:id`
 - `/users?filter=value`
 
-Puedes explorar las pruebas para conocer un poco sobre el funcionamiento esperado.
+You can explore the tests to learn a little about the expected performance.
 
 ### Sample data
 
@@ -55,36 +55,36 @@ Puedes explorar las pruebas para conocer un poco sobre el funcionamiento esperad
 
 ### Extra points
 
-Entre mas extra points agregues mejor sera la calificacion.
+Extra points, Improve the score.
 
-- Filtrado por geozone `[latitude, longitude]`
-- Rango de fechas sobre `registered`
-- Filtrado por `friends` by name
-- Filtrado por multiples `tags` (like `/users?tags=value1,value2,value3`)
-- Poder combinar dos o mas filtros (like `/users?filter=value&filter2=value2`)
-- Ordenamiento por fecha de registro `registered`
-- Incluir cache y/o optimizacion sobre las busquedas
-- Complementar los test
-- Entender y apegarce al code style
-- Commis constantes y claros
-
-### Ejecutar el entorno
+- Filtered by geo-zone `[latitude, longitude]`
+- Date range on `registered`
+- Filtered by `friends` by `name`
+- Filtering by multiple `tags` (like` / users? Tags = value1, value2, value3`)
+- Be able to combine two or more filters (like `/ users? Filter = value & filter2 = value2`)
+- Sort by date of registration `registered`
+- Include cache and/or search optimization
+- Complement the tests
+- Understand and adhere to the style code
+- Constant and clear commis
+- 
+### Run enviroment
 
 ```sh
-# antes de iniciar crea un fork del proyecto
+# before to start make a fork
 git clone https://github.com/{{githubuser}}/backend-challenge
 cd backend-challenge
 docker-compose build
 docker-compose up
 
-# Si se requiere correr los test
+# To run test
 docker ps # para ver el id con contenerdor `backend-challenge_src`
 docker exec -it container_id bash
 npm run test
 ```
-### Proceso de entrega
+### Delivery process
 
-- Primero debera crear un fork del este repositorio
-- Trabajar y mandar commits constante al repositorio en personal
-- Mandor un pull request al repo original (punstos extra)
-- Mandar la direccion de tu fork (el repo en tu usuario)
+- First, you must create a fork of this repository
+- Works and sends constant commits to the repository in personal
+- Send a pull request to the original repo (extra points)
+- Send the address of your fork (the repo in your user)
