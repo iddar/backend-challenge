@@ -78,7 +78,7 @@ docker-compose build
 docker-compose up
 
 # To run test
-docker ps # para ver el id con contenerdor `backend-challenge_src`
+docker ps # To show id of containers `backend-challenge_src`
 docker exec -it container_id bash
 npm run test
 ```
