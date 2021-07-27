@@ -1,18 +1,18 @@
 version: "3.5"
 
 services:
+
+  mysql:
+    image: mysql
+    environment: 
+      - MYSQL_DATABASE=user_service_db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+
   redis:
     image: "bitnami/redis:latest"
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
-
-  mongodb_container:
-    image: mongo:latest
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: rootpassword
-    ports:
-      - 27017:27017
 
   src:
     build:
