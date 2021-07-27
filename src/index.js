@@ -24,6 +24,10 @@ app.get('/users/:id', async (req, res) => {
 
   console.log(req.params, 'requests params');
 
+  // const userID = users
+
+  console.log(users)
+
   res.json(users[25])
 })
 

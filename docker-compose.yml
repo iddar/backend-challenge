@@ -1,5 +1,14 @@
-version: '3.5'
+version: "3.5"
+
 services:
+  mongodb_container:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    ports:
+      - 27017:27017
+
   src:
     build:
       context: src/
@@ -7,7 +16,7 @@ services:
       - ./src:/app
       - /app/node_modules
     ports:
-      - '3000:3000'
+      - "3000:3000"
     links:
       - api
     depends_on:
@@ -20,7 +29,7 @@ services:
       - ./api:/app
       - /app/node_modules
     ports:
-      - '8000:8000'
+      - "8000:8000"
     # environment:
     #   - POSTGRES_USER=postgres
     #   - POSTGRES_DB=commando
