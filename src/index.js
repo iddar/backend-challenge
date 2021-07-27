@@ -1,38 +1,55 @@
-const express = require('express')
-const { usersCollection } = require('./fetch')
+const express = require("express");
+const { usersCollection } = require("./fetch");
 
-const app = express()
-const port = process.env.NODE_ENV === 'test' ? 3001 : 3000
+const { connection } = require("./database/sqlConnection");
+
+const app = express();
+const port = process.env.NODE_ENV === "test" ? 3001 : 3000;
 
 // middleware
 // For parsing application/json - https://www.geeksforgeeks.org/express-js-req-body-property/
 app.use(express.json());
 
-app.get('/', async (req, res) => {
+app.get("/", async (req, res) => {
   res.json({
-    status: 'Ok!'
-  })
-})
+    status: "Ok!",
+  });
+});
 
-app.get('/users', async (req, res) => {
-  const users = await usersCollection()
-  res.json(users)
-})
+app.get("/users", async (req, res) => {
+  const users = await usersCollection();
+  res.json(users);
+});
 
-app.get('/users/:id', async (req, res) => {
-  const users = await usersCollection()
+app.get("/users/:id", async (req, res) => {
+  const users = await usersCollection();
 
-  console.log(req.params, 'requests params');
+  console.log(req.params, "requests params");
 
   // const userID = users
 
-  console.log(users)
+  console.log(users);
 
-  res.json(users[25])
-})
+  res.json(users[25]);
+});
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
+  connection.connect((err) => {
+    if (err) console.log(err);
 
-module.exports = app
+    console.log("Connected");
+
+    connection.query("SELECT name FROM master.dbo.sysdatabases",(err, results) => {
+      if (err) {
+        console.log(err)
+      }
+
+      console.log(results)
+    })
+
+  });
+
+  console.log(`Example app listening at http://localhost:${port}`);
+});
+
+module.exports = app;

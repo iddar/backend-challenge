@@ -5,9 +5,10 @@ services:
   mysql:
     image: mysql
     environment: 
+      - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=user_service_db
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=root
+    ports:
+      - "3307:3306"
 
   redis:
     image: "bitnami/redis:latest"
@@ -19,7 +20,7 @@ services:
       context: src/
     volumes:
       - ./src:/app
-      - /app/node_modules
+      # - /app/node_modules
     ports:
       - "3000:3000"
     links:
