@@ -28,26 +28,21 @@ app.get("/users/:id", async (req, res) => {
 
   // const userID = users
 
-  console.log(users);
+  // console.log(users);
 
   res.json(users[25]);
+
+  connection.query("SHOW DATABASES;",(err, results) => {
+    if (err) {
+      console.log(err)
+    }
+
+    console.log(results)
+  })
 });
 
 app.listen(port, () => {
-  connection.connect((err) => {
-    if (err) console.log(err);
-
-    console.log("Connected");
-
-    connection.query("SELECT name FROM master.dbo.sysdatabases",(err, results) => {
-      if (err) {
-        console.log(err)
-      }
-
-      console.log(results)
-    })
-
-  });
+ 
 
   console.log(`Example app listening at http://localhost:${port}`);
 });
