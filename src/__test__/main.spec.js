@@ -36,6 +36,17 @@ describe('Test Challenge', () => {
     expect(valid['_id']).toBe(userID)
   })
 
+  test('Filter by Date Range', async () => {
+    const userID = '5f7e0b7e799f06f06f674dd4'
+    const dateRange = 'Thursday, January 2, 2020 11:05 PM-Thursday, March 12, 2020 11:07 AM'
+    
+    const res = await request(app).get(`/users?registered=${dateRange}`)
+    expect(res.status).toBe(200)
+    
+    const valid = res.body.find(u => u['_id'] === userID)
+    expect(valid['_id']).toBe(userID)
+  })
+
   test('Filter by Eye color', async () => {
     const userIDValid = '5f7e0b7eafac24349430d444'
     const userIDInvalid = '5f7e0b7ee6aede5fab6850c6'
@@ -54,6 +65,17 @@ describe('Test Challenge', () => {
   test('Filter by Friend name', async () => {
     const userIDValid = '5f7e0b7e2c9a3d011186e284'
     const friend = 'Sexton Hamilton'
+    
+    const res = await request(app).get(`/users?friend=${friend}`)
+    expect(res.status).toBe(200)
+    
+    const valid = res.body.find(u => u['_id'] === userIDValid)
+    expect(valid['_id']).toBe(userIDValid)
+  })
+
+  test('Filter by Friend with partial/guessed name', async () => {
+    const userIDValid = '5f7e0b7e2c9a3d011186e284'
+    const friend = 'Hamilton'
     
     const res = await request(app).get(`/users?friend=${friend}`)
     expect(res.status).toBe(200)
