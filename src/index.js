@@ -20,36 +20,27 @@ app.get("/", async (req, res) => {
 
 app.get("/users", async (req, res) => {
   const users = await usersCollection();
+  // UserIDs (UserID int, UserInfoID int, PRIMARY KEY (UserID), FOREIGN KEY (UserInfoID) REFERENCES UserInfo (UserInfoID)),
+  // UserInfo (UserInfoID int, UserID int, PRIMARY KEY (UserInfoID), FOREIGN KEY (UserID) REFERENCES UserIDs (UserID));`,
+  // SELECT COUNT(*)
+  //   FROM information_schema.tables
+  //   WHERE table_schema = 'user_service_db'
+  //   AND table_name = 'UserIDs' AND table_name = 'UserInfo';
 
-  const UserIDsTableName = `UserIDs`;
+  // https://stackoverflow.com/questions/52377469/failed-to-open-the-referenced-table this references a chiken and egg problem where both tables reference each other without being created causing circular problems
 
-  const UserIDsColumnName = "ID";
-
-  const CheckTableExists = `SELECT *
-  FROM INFORMATION_SCHEMA.TABLES
-  WHERE TABLE_SCHEMA = '${UserIDsTableName}'`;
-
-  const createTableQuery = `CREATE TABLE ${UserIDsTableName};`;
-
-  connection.query(CheckTableExists, (err, results) => {
-    if (err) {
-      console.log(err);
-    }
-
-    if (results.length === 0) { // if no table appears make one
-      for (let i = 0; i < users.length; i++) { // go through each user and add them to the database
-        if (i === 0) { // starting at the first one fince mysql needs a column name to start off with 
-          connection.query(createTableQuery, (err, results) => {
-            if (err) {
-              console.log(err);
-            }
-
-            console.log("Users Table has been created");
-          });
-        }
+  connection.query(
+    `CREATE TABLE IF NOT EXISTS UserIDs  (
+      UserID int, UserInfoID int, PRIMARY KEY (UserID), FOREIGN KEY (UserInfoID) REFERENCES UserInfo (UserInfoID)
+  );`,
+    (err, results) => {
+      if (err) {
+        console.log(err);
       }
+
+      console.log("Users Table & UserInfo Table has been created", results);
     }
-  });
+  );
 
   res.json(users);
 });
@@ -102,5 +93,9 @@ app.listen(port, () => {
 
   console.log(`Example app listening at http://localhost:${port}`);
 });
+
+/* 
+
+*/
 
 module.exports = app;
