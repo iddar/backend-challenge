@@ -29,19 +29,74 @@ app.get("/users", async (req, res) => {
 
   // https://stackoverflow.com/questions/52377469/failed-to-open-the-referenced-table this references a chiken and egg problem where both tables reference each other without being created causing circular problems
 
+  // connection.query("USE user_service_db;");
   connection.query(
-    `CREATE TABLE IF NOT EXISTS UserIDs  (
-      UserID int, UserInfoID int, PRIMARY KEY (UserID), FOREIGN KEY (UserInfoID) REFERENCES UserInfo (UserInfoID)
-  );`,
+    `SELECT COUNT(*)
+   FROM information_schema.tables
+   WHERE table_schema = 'user_service_db'
+   AND table_name = 'UserIDs' OR table_name = 'UserInfo';`,
     (err, results) => {
       if (err) {
         console.log(err);
       }
 
-      console.log("Users Table & UserInfo Table has been created", results);
+      connection.query(`SHOW TABLES;`, (err, results) => {
+        // console.log(results) //shows tables in db
+      });
+
+      // connection.query(`SELECT * FROM UserIDs`, (err, results) => {
+
+      // })
+
+      if (results[0]["COUNT(*)"] === 1) {
+        // checks to see if only one table (users id ) is up if it is then it drops it
+        connection.query(`DROP TABLE IF EXISTS UserIDs`, (err, results) => {
+          if (err) {
+            console.log(err);
+          }
+
+          console.log("dropped UserIDs");
+        });
+      }
+
+      if (results[0]["COUNT(*)"] === 0) {
+        // if no tables created then it will get created
+        connection.query(
+          `CREATE TABLE UserIDs( UserID int, UserInfoID int, PRIMARY KEY (UserID));`,
+          (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+
+            console.log(results, "Created Table UserIDs");
+          }
+        );
+
+        connection.query(
+          `CREATE TABLE UserInfo(UserInfoID int, FOREIGN KEY (UserInfoID) references UserIDs(UserID), PRIMARY KEY (UserInfoID));`,
+          (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+
+            console.log(results, "Created Table UserInfo");
+          }
+        );
+
+        connection.query(
+          `alter table UserIDs add foreign key (UserInfoID) references UserInfo(UserInfoID);`,
+          (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+            console.log(results, "Altered tables");
+          }
+        );
+      }
     }
   );
 
+  console.log("users endpoint");
   res.json(users);
 });
 
@@ -95,7 +150,30 @@ app.listen(port, () => {
 });
 
 /* 
+ The way I would have accomplished this is if i used mongodb to just insert everything into the database and then update the id with the new values if that was the case
+ but i opted to use mysql since the job desc uses a postgres sql hence the mysql
 
+ experience with this project - very new to docker and somehow managed to finaly understand that docker has container has to be at the same port as the node.js port which is defaulted to 3306
+ still a bit shaky with that but got it to work after pulling my hair out
+
+ next thing planning out how to add all the values to multiple or one table! 
+
+ I decided to take a nonsql approach and looking if this was frowned uppon - i since found facebook uses a similar approach with mysql as well
+  mysql provides a unique way to store huge nested key value pairs! 
+
+  Decided to just json everything and pick out the ids from one table and hook it up to the another table containing thier information and parse it when someone hits "/users/:id" this end point 
+  basicaly serializing data and deserializing when a user hits an endpoint making the object easy to access values and presenting it to the user
+
+  Also was going to add a layer or redis to ignore querying too offten and giving a performance boost to the server!
+
+
+  struggles - 
+  docker / docker-compose set up to connect to node.js ports 
+  a connection issue with mysql causing 2 handshakes and a whole bunch of errs i put the link in one of the early commits
+  not being able to bundle my querys into one to make querying faster and with less trips thats something im super eager to get
+  the thought about not using mysql as its intended and serializing objects not sure if frowned or not frowned uppon
+
+  Very good project overall and I feel as if I would be cheating if I just used mongodb and not learned more about sql language and mysql as a whole!
 */
 
 module.exports = app;
