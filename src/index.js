@@ -30,6 +30,7 @@ app.get("/users", async (req, res) => {
   // https://stackoverflow.com/questions/52377469/failed-to-open-the-referenced-table this references a chiken and egg problem where both tables reference each other without being created causing circular problems
 
   // connection.query("USE user_service_db;");
+
   connection.query(
     `SELECT COUNT(*)
    FROM information_schema.tables
@@ -40,23 +41,24 @@ app.get("/users", async (req, res) => {
         console.log(err);
       }
 
-      connection.query(`SHOW TABLES;`, (err, results) => {
-        // console.log(results) //shows tables in db
-      });
-
       // connection.query(`SELECT * FROM UserIDs`, (err, results) => {
 
       // })
 
+      console.log(results);
       if (results[0]["COUNT(*)"] === 1) {
         // checks to see if only one table (users id ) is up if it is then it drops it
-        connection.query(`DROP TABLE IF EXISTS UserIDs`, (err, results) => {
-          if (err) {
-            console.log(err);
-          }
 
-          console.log("dropped UserIDs");
-        });
+        connection.query(
+          `DROP TABLE IF EXISTS UserIDs, UserInfo;`,
+          (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+
+            console.log("dropped UserIDs and UserInfo");
+          }
+        );
       }
 
       if (results[0]["COUNT(*)"] === 0) {
@@ -73,7 +75,7 @@ app.get("/users", async (req, res) => {
         );
 
         connection.query(
-          `CREATE TABLE UserInfo(UserInfoID int, FOREIGN KEY (UserInfoID) references UserIDs(UserID), PRIMARY KEY (UserInfoID));`,
+          `CREATE TABLE UserInfo(UserInfoID int, UserInfoJSON BLOB, FOREIGN KEY (UserInfoID) references UserIDs(UserID), PRIMARY KEY (UserInfoID));`,
           (err, results) => {
             if (err) {
               console.log(err);
@@ -90,6 +92,52 @@ app.get("/users", async (req, res) => {
               console.log(err);
             }
             console.log(results, "Altered tables");
+
+            connection.query(`SHOW TABLES;`, (err, results) => {
+              console.log(results); //shows tables in db
+
+              let mainTables = 0;
+
+              for (let i = 0; i < results.length; i++) {
+                if (
+                  results["Tables_in_user_service_db"] === "UserIDs" ||
+                  results["Tables_in_user_service_db"] === "UserInfo"
+                ) {
+                  mainTables += 1;
+                }
+              }
+
+              if (mainTables === 2) {
+                //start inserting the data from users
+
+                const sqlUserID = `INSERT INTO UserIDs (UserID) VALUES ?`;
+
+                const sqlUserInfo = `INSERT INTO UserInfo (UserInfoID, UserInfoJSON) VALUES ?`;
+
+                const userIDsArr = [];
+
+                const userData = [];
+
+                for (let i = 0; i < users.length; i++) {
+                  userIDsArr.push([users[i]["_id"]]);
+                  userData.push([[users[i]["_id"]], JSON.stringify(users[i])]);
+                }
+                // one problem is millions of records need to be inserted, this becomes a problem on first load but if continuous load and continous adding new users and updating their data then it would mitigate the problem
+
+                connection.query(sqlUserID, [userIDsArr], (err, result) => {
+                  if (err) {
+                    console.log(err);
+                  }
+                  console.log("Added USER IDs");
+                });
+                connection.query(sqlUserInfo, [userData], (err, result) => {
+                  if (err) {
+                    console.log(err);
+                  }
+                  console.log("Added USER INFO");
+                });
+              }
+            });
           }
         );
       }
