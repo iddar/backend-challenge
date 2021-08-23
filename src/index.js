@@ -3,7 +3,7 @@ const { usersCollection } = require('./fetch')
 const {filters,filterFunction} = require('./filterfunctions')
 const redis = require('redis')
 const client = redis.createClient({
-  host: 'localhost',
+  host: 'redis',
 
 });
 console.log("dsadsad")
@@ -30,7 +30,10 @@ app.get('/users', async (req, res) => {
 
       let user_data = await usersCollection()
         user = user_data.filter(single_user =>filterFunction(single_user,req.query)).sort(compareDate)
-      client.set(JSON.stringify(req.query),JSON.stringify(user))
+        if(user.length > 0){
+
+          client.set(JSON.stringify(req.query),JSON.stringify(user))
+        }
     }
   }catch(e){
     console.log("Error", e);
@@ -52,8 +55,11 @@ app.get('/users/:id', async (req, res) => {
       user = data
     } else {
       let all_users = await usersCollection()
-      user = all_users.filter(single_user => single_user._id === req.params.id)[0]
-      client.set(req.params.id,JSON.stringify(user))
+      user = all_users.filter(single_user => single_user._id === req.params.id)
+      if(user.length > 0){
+
+        client.set(req.params.id,JSON.stringify(user[0]))
+      }
     }
   } catch (e) {
     console.log("Error", e);
@@ -61,7 +67,7 @@ app.get('/users/:id', async (req, res) => {
       message: "error"
     })
   } finally {
-    setTimeout(()=>res.status(200).json(user),1000)
+res.status(200).json(user)
   }
 
 

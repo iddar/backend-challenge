@@ -13,9 +13,10 @@ const filters  = {
 
     },
   tags:(tags,single_person)=>{
-         tags = tags.split(',')
-        let regex = `/${tags.join('|')}/g`
-        return [...single_person.tags.join(" ").matchAll(regex)].length > 0
+      tags = tags.split(',')
+      let joined = tags.join("|")
+      let regex = new RegExp(`(?:${joined})\\b`,"gi").test(single_person.tags.join(" "))
+        return regex
     }
     
 }
