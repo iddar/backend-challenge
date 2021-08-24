@@ -1,6 +1,6 @@
 # Implementation
 
-This branch of this project in Implemented in MongoDb using mongoose.
+This branch of this project is implemented in MongoDb using mongoose.
 
 ## URLs
 
