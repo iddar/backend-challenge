@@ -1,30 +1,23 @@
-const moment = require('moment')
 const filters  = {
-    generalFilter:(params,values,single_person)=>{
-            return single_person[params] === values
+    friends:(name)=>{
+        return  { friends: { $elemMatch: { name: name } } }
     },
-  
-    friends:(name,single_person)=>{
-        return (single_person.friends.filter(single_friend =>single_friend.name === name).length > 0)
+    name:(name)=>{
+        return  { "name.first": name }
     },
-    registeredRange:(range,single_person)=>{
-        range = range.split('-')
-       return moment(single_person.registered).utc().isBetween(range[0],range[1])
-
+    registeredRange:(dates)=>{
+        let [startDate, endDate] = dates.split(",")
+      return   {  "registered": { "$gte": new Date(startDate), "$lt": new Date(endDate) } }
     },
-  tags:(tags,single_person)=>{
-      tags = tags.split(',')
-      let joined = tags.join("|")
-      let regex = new RegExp(`(?:${joined})\\b`,"gi").test(single_person.tags.join(" "))
-        return regex
+  tags:(tags)=>{
+            return { "tags": { "$in": tags.split(',') } }
+    },
+    geoData:(geoData)=>{
+        let [lat,long] = geoData.split(',')
+      return  {"longitude":long,"latitude":lat}
     }
     
 }
-const Variable = ['tags','friends','registeredRange']
 
-const filterFunction = (single_person,param) =>{
-   let combi =   Object.keys(param).map(single_element =>Variable.includes(single_element) ? filters[single_element](param[single_element], single_person):filters.generalFilter(single_element,param[single_element],single_person))
-   return combi.includes(false) ? false:true
-}
 
-module.exports = {filters,filterFunction}
+module.exports = {filters}

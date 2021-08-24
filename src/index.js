@@ -1,13 +1,15 @@
 const express = require('express')
 const { usersCollection } = require('./fetch')
-const {filters,filterFunction} = require('./filterfunctions')
+const mongoose = require('mongoose')
 const redis = require('redis')
 const client = redis.createClient({
   host: 'redis',
 
 });
-console.log("dsadsad")
-const {processRedis,compareDate} = require('./utls')
+const {filters} = require('./filterfunctions');
+mongoose.connect("mongodb://root:example@mongo:27017/test", { authSource: 'admin', useNewUrlParser: true, useUnifiedTopology: true })
+const { processRedis, compareDate } = require('./utls')
+const User = require('./User')
 const app = express()
 const port = process.env.NODE_ENV === 'test' ? 3001 : 3000
 client.on("error", function (error) {
@@ -18,24 +20,42 @@ app.get('/', async (req, res) => {
     status: 'Ok!'
   })
 })
+// usersCollection().then(data =>{
+//   User.insertMany(data, (err, response) => {
+//     console.log(err, response)
+//   })
+// })
+
 app.get('/users', async (req, res) => {
   console.log(req.query)
   let user = {}
   try {
-   let data = await processRedis(client, JSON.stringify(req.query))
-   console.log(data)
-    if(data){
+    let data = await processRedis(client, JSON.stringify(req.query))
+    console.log(data)
+    if (data) {
       user = data
-    }else{
+    } else {
+      let Object_value = {}
+      Object.keys(req.query).map(single_element => {
+        if(filters[single_element]){
 
-      let user_data = await usersCollection()
-        user = user_data.filter(single_user =>filterFunction(single_user,req.query)).sort(compareDate)
-        if(user.length > 0){
-
-          client.set(JSON.stringify(req.query),JSON.stringify(user))
+          Object_value = {
+            ...Object_value,...filters[single_element](req.query[single_element])
+          }
         }
+        else {
+          Object_value = { ...Object_value, [single_element]: req.query[single_element] }
+        }
+      })
+      console.log(Object_value)
+      user = await User.find(Object_value)
+      user = user.sort(compareDate)
+      if (user.length > 0) {
+
+        client.set(JSON.stringify(req.query), JSON.stringify(user))
+      }
     }
-  }catch(e){
+  } catch (e) {
     console.log("Error", e);
     res.status(401).json({
       message: "error"
@@ -54,11 +74,11 @@ app.get('/users/:id', async (req, res) => {
     if (data) {
       user = data
     } else {
-      let all_users = await usersCollection()
-      user = all_users.filter(single_user => single_user._id === req.params.id)
-      if(user.length > 0){
+      user = await User.findById(req.params.id).exec();
 
-        client.set(req.params.id,JSON.stringify(user[0]))
+      if (user) {
+
+        client.set(req.params.id, JSON.stringify(user))
       }
     }
   } catch (e) {
@@ -67,7 +87,7 @@ app.get('/users/:id', async (req, res) => {
       message: "error"
     })
   } finally {
-res.status(200).json(user)
+    res.status(200).json(user)
   }
 
 
