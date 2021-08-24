@@ -18,10 +18,6 @@ The project has two urls.
     - For filtering by Geo Data /users?geoData="latitude,longitude"
     - For everything else /users?PropertyName:PropertyValue
 
-### Tip
-
-To write the data to MongoDb uncomment the line from 23-27 in src/index.js.
-
 ### Sample data
 
 ```js
