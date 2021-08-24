@@ -3,7 +3,7 @@ const filters  = {
         return  { friends: { $elemMatch: { name: name } } }
     },
     name:(name)=>{
-        return  { "name.first": name }
+        return  { $or:[{"name.first": name},{"name.last":name}] }
     },
     registeredRange:(dates)=>{
         let [startDate, endDate] = dates.split(",")
