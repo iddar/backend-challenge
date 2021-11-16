@@ -1,4 +1,4 @@
-version: '3.5'
+version: "3.5"
 services:
   src:
     build:
@@ -7,11 +7,17 @@ services:
       - ./src:/app
       - /app/node_modules
     ports:
-      - '3000:3000'
+      - "3000:3000"
     links:
       - api
+      - mongo
     depends_on:
       - api
+
+  mongo:
+    image: mongo
+    ports:
+      - "27018:27017"
 
   api:
     build:
@@ -20,7 +26,8 @@ services:
       - ./api:/app
       - /app/node_modules
     ports:
-      - '8000:8000'
+      - "8000:8000"
+
     # environment:
     #   - POSTGRES_USER=postgres
     #   - POSTGRES_DB=commando
