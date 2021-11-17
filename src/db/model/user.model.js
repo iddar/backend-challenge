@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
-const nameSchema = new moongoose.Schema({
+const nameSchema = new mongoose.Schema({
   first: String,
   last: String,
 });
 
 const friendSchema = new mongoose.Schema({
-  id: number,
+  id: Number,
   name: String,
 });
 

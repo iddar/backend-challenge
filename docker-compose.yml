@@ -17,8 +17,9 @@ services:
   mongo:
     image: mongo
     container_name: mongodb
-    logging:
-      driver: none
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: usersdb
     ports:
       - "27017:27017"
 
