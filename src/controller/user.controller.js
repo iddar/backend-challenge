@@ -27,6 +27,14 @@ exports.filterUsersHandler = async(req, res)=>{
                 return res.status(200).json(getAllUsers);
 
             }
+
+            //if tags are on presented on the query as follows: Tags = value1,value2,value3
+            //are converted into an array and the property is modified in order to be able to query using multiple tags
+            if(queryObj.hasOwnProperty("tags")){
+                queryObj["tags"]= { "$in" :queryObj["tags"].split(",")};
+                
+            }
+
         const query = await User.find(queryObj); //accepts multiple filters at once
 
         
@@ -37,3 +45,4 @@ exports.filterUsersHandler = async(req, res)=>{
         res.status(404).json(message);
     }
 }
+
