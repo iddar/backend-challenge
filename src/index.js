@@ -11,10 +11,7 @@ app.get("/", async (req, res) => {
   });
 });
 
-app.get("/users", async (req, res) => {
-  const users = await usersCollection();
-  res.json(users);
-});
+app.get("/users", userController.filterUsersHandler);
 
 app.get("/users/:id", userController.getUserById);
 

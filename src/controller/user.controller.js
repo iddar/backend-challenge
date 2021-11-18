@@ -15,3 +15,25 @@ exports.getUserById= async(req,res)=>{
         res.status(404).json(message)
     }
 }
+
+exports.filterUsersHandler = async(req, res)=>{
+    try{
+            const queryObj = {...req.query} //get all the queries and get a copy as an object
+
+            //if there is not queries on the request the api get and sends all the users
+            if(Object.keys(queryObj).length === 0){
+                const getAllUsers = await User.find();
+                if(!getAllUsers) throw new Error("Not users were found"); //if db is empy throw an error
+                return res.status(200).json(getAllUsers);
+
+            }
+        const query = await User.find(queryObj); //accepts multiple filters at once
+
+        
+        res.status(200).json(query)
+    }
+    catch(err){
+        const message = err.message || err 
+        res.status(404).json(message);
+    }
+}
