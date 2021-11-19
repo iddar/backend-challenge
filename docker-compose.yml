@@ -20,6 +20,8 @@ services:
     restart: always
     environment:
       MONGO_INITDB_DATABASE: usersdb
+    volumes:
+      - /home/mongodb/database:/data/db
     logging:
       driver: none
     ports:
