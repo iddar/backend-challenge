@@ -33,7 +33,7 @@ module.exports.updateData = async()=> {
       const allDBUsers= await User.find();
       const deletedUsers = getDeletedUsers(users, allDBUsers);
       
-      if(deletedUsers.length >0){
+      if(deletedUsers.length >0){  //if some prev users were deleted from the API we need to remove them from our local db
           for(const deletedUser of deletedUsers){
              const removeUser = await User.findOneAndDelete({"_id": deletedUser["_id"]});
              
@@ -57,7 +57,7 @@ module.exports.updateData = async()=> {
     }
 }
 
-const getDeletedUsers = (usersCollection, dbCollection)=>{ //this function helps to get all the users were deleted fron the collection API in order to be able to deleted in our local db
+const getDeletedUsers = (usersCollection, dbCollection)=>{ //this function helps to get all the users were deleted from the collection API in order to be able to deleted in our local db
       
   const deletedUsers =  dbCollection.filter(user => {
       return !usersCollection.find(dbUser => {
