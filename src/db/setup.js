@@ -1,16 +1,11 @@
 const mongoose = require("mongoose");
 const { usersCollection } = require("../fetch");
 const User = require("./model/user.model");
+const dataUtils = require("./utilsData")
 mongoose
   .connect("mongodb://mongo/usersdb")
   .then(async (db) => {
-    const users = await usersCollection();
-    User.insertMany(users)
-      .then(function () {
-        console.log("Data inserted"); // Success
-      })
-      .catch(function (error) {
-        console.log(error); // Failure
-      });
+    console.log(dataUtils)
+    dataUtils.loadDataIntoDB();
   })
   .catch((err) => console.log(err));

@@ -24,6 +24,7 @@ exports.filterUsersHandler = async(req, res)=>{
             if(Object.keys(queryObj).length === 0){
                 const getAllUsers = await User.find();
                 if(!getAllUsers) throw new Error("Not users were found"); //if db is empy throw an error
+                
                 return res.status(200).json(getAllUsers);
 
             }

@@ -20,6 +20,8 @@ services:
     restart: always
     environment:
       MONGO_INITDB_DATABASE: usersdb
+    logging:
+      driver: none
     ports:
       - "27017:27017"
 
