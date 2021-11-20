@@ -1,5 +1,17 @@
 const { usersCollection } = require("../fetch");
 const User = require("./model/user.model");
+const {promisify} = require('util');
+const redis = require('redis');
+
+const redisClient = redis.createClient({
+  host: "redis",
+  port: 6379
+})
+
+module.exports.GET_REDIS_ASYNC = promisify(redisClient.get).bind(redisClient);
+module.exports.SET_REDIS_ASYNC = promisify(redisClient.set).bind(redisClient);
+const FLUSH_REDIS_ASYNC = promisify(redisClient.flushdb).bind(redisClient);
+
 
  module.exports.loadDataIntoDB = async () => {
   try{
@@ -49,7 +61,10 @@ module.exports.updateData = async()=> {
         }
       }
     
-
+    console.log("........Flushing redis cache........");
+    const flushResponse = await FLUSH_REDIS_ASYNC();
+    console.log(flushResponse)
+    console.log("........Flush completed........");
 
     }
     catch(err){
