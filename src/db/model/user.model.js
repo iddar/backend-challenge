@@ -1,3 +1,8 @@
+
+global.TextEncoder = require("util").TextEncoder;
+
+global.TextDecoder = require("util").TextDecoder;
+
 const mongoose = require("mongoose");
 
 const nameSchema = new mongoose.Schema({
@@ -25,7 +30,11 @@ const userSchema = new mongoose.Schema({
   phone: String,
   address: String,
   about: String,
-  registered: String,
+  registered: {
+    type: Date,
+    set: date => new Date(date),
+    get: date => date.toLocaleString('en-US', { dateStyle: 'full', timeStyle: 'medium' }),
+  },
   latitude: String,
   longitude: String,
   tags: Array,
@@ -33,6 +42,10 @@ const userSchema = new mongoose.Schema({
   friends: [friendSchema],
   greeting: String,
   favoriteFruit: String,
+},{
+  toObject: {getters: true, setters: true},
+  toJSON: {getters: true, setters: true},
 });
+
 
 module.exports = mongoose.model("User", userSchema);

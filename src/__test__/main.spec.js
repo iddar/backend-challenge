@@ -19,7 +19,7 @@ describe('Test Challenge', () => {
     expect(res.body).toMatchSnapshot()
   })
 
-  test.skip('Get user by id', async () => {
+  test('Get user by id', async () => {
     const userID = '5f7e0b7e7f4f4669ef583263'
     const res = await request(app).get(`/users/${userID}`)
     expect(res.status).toBe(200)

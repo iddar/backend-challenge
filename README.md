@@ -88,3 +88,7 @@ npm run test
 - Works and sends constant commits to the repository in personal
 - Send a pull request to the original repo (extra points)
 - Send the address of your fork (the repo in your user)
+
+### Notes
+
+-Filter by date range it is possible using lte, lt,gte and gt operators 

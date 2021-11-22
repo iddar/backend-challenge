@@ -55,8 +55,13 @@ exports.filterUsersHandler = async(req, res)=>{
                 queryObj["tags"]= { "$in" :queryObj["tags"].split(",")};
                 
             }
-
-        const query = await User.find(queryObj); //accepts multiple filters at once
+   
+            let queryStr = JSON.stringify(queryObj); //query object was parse into string to be able to add $ operator for advance filtering
+            queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
+            
+         
+         
+        const query = await User.find(JSON.parse(queryStr)); //accepts multiple filters at once
 
         await utilsData.SET_REDIS_ASYNC(JSON.stringify(queryObj), JSON.stringify(query));  
         res.status(200).json(query)
