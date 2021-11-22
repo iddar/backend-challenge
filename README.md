@@ -91,4 +91,4 @@ npm run test
 
 ### Notes
 
--Filter by date range it is possible using lte, lt,gte and gt operators 
+-Filter by date range it is possible using lte, lt, gte and gt operators 

@@ -32,20 +32,6 @@ exports.filterUsersHandler = async(req, res)=>{
 
             let redisCache = null;
 
-            //if there is not queries on the request the api get and sends all the users
-            if(Object.keys(queryObj).length === 0){
-
-                //verifies on redis before asking mongodb
-                redisCache = await utilsData.GET_REDIS_ASYNC("users");
-                if(redisCache) return res.status(200).json(JSON.parse(redisCache));
-                
-                const getAllUsers = await User.find();
-                if(!getAllUsers) throw new Error("Not users were found"); //if db is empy throw an error
-                await utilsData.SET_REDIS_ASYNC("users", JSON.stringify(getAllUsers));  
-                return res.status(200).json(getAllUsers);
-
-            }
-
             redisCache = await utilsData.GET_REDIS_ASYNC(JSON.stringify(queryObj));
             if(redisCache) return res.status(200).json(JSON.parse(redisCache));
 
@@ -61,10 +47,24 @@ exports.filterUsersHandler = async(req, res)=>{
             
          
          
-        const query = await User.find(JSON.parse(queryStr)); //accepts multiple filters at once
+            let query =User.find(JSON.parse(queryStr)); //accepts multiple filters at once
+            
+            if(queryObj.sort){ // if sort is presented on query, results can be sort by registered day in asc or desc order
+               query = query.sort({ registered: queryObj.sort});
+            }else{ // by default results are sort in asc order
+                query = query.sort({ registered: 'asc'})
+            }
 
-        await utilsData.SET_REDIS_ASYNC(JSON.stringify(queryObj), JSON.stringify(query));  
-        res.status(200).json(query)
+              
+
+            const results = await query; //query is executed
+            if(results.length === 0) {
+                await utilsData.SET_REDIS_ASYNC(JSON.stringify(queryObj), "not results were found");  
+                return res.status(404).send("not results were found");
+            } 
+
+            await utilsData.SET_REDIS_ASYNC(JSON.stringify(queryObj), JSON.stringify(results));  
+            res.status(200).json(results)
     }
     catch(err){
         const message = err.message || err 
