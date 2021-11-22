@@ -41,13 +41,14 @@ exports.filterUsersHandler = async(req, res)=>{
                 queryObj["tags"]= { "$in" :queryObj["tags"].split(",")};
                 
             }
-   
+          
             let queryStr = JSON.stringify(queryObj); //query object was parse into string to be able to add $ operator for advance filtering
             queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
             
          
          
             let query =User.find(JSON.parse(queryStr)); //accepts multiple filters at once
+           
             
             if(queryObj.sort){ // if sort is presented on query, results can be sort by registered day in asc or desc order
                query = query.sort({ registered: queryObj.sort});

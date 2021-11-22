@@ -35,8 +35,14 @@ const userSchema = new mongoose.Schema({
     set: date => new Date(date),
     get: date => date.toLocaleString('en-US', { dateStyle: 'full', timeStyle: 'medium' }),
   },
-  latitude: String,
-  longitude: String,
+  latitude: {
+    type: Number,
+    set: latitude => Number(latitude)
+  },
+  longitude: {
+    type: Number,
+    set: longitude => Number(longitude)
+  },
   tags: Array,
   range: Array,
   friends: [friendSchema],
