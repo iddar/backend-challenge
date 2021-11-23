@@ -43,10 +43,10 @@ exports.filterUsersHandler = async(req, res)=>{
             }
           
             let queryStr = JSON.stringify(queryObj); //query object was parse into string to be able to add $ operator for advance filtering
-            queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
+            queryStr = queryStr.replace(/\b(gte|gt|lte|lt|eq)\b/g, match => `$${match}`);
             
          
-         
+            console.log(JSON.parse(queryStr))
             let query =User.find(JSON.parse(queryStr)); //accepts multiple filters at once
            
             
@@ -60,11 +60,11 @@ exports.filterUsersHandler = async(req, res)=>{
 
             const results = await query; //query is executed
             if(results.length === 0) {
-                await utilsData.SET_REDIS_ASYNC(JSON.stringify(queryObj), "not results were found");  
+                await utilsData.SET_REDIS_ASYNC(JSON.stringify(queryObj), "not results were found");  //redis cached if not results were found
                 return res.status(404).send("not results were found");
             } 
 
-            await utilsData.SET_REDIS_ASYNC(JSON.stringify(queryObj), JSON.stringify(results));  
+            await utilsData.SET_REDIS_ASYNC(JSON.stringify(queryObj), JSON.stringify(results));  // redis cached the results for that query
             res.status(200).json(results)
     }
     catch(err){

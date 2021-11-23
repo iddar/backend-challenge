@@ -23,7 +23,10 @@ const userSchema = new mongoose.Schema({
   balance: String,
   picture: String,
   age: Number,
-  eyeColor: String,
+  eyeColor: {
+    type:String,
+    enum: ["blue", "brown", "green"],
+  },
   name: [nameSchema],
   company: String,
   email: String,
@@ -47,7 +50,10 @@ const userSchema = new mongoose.Schema({
   range: Array,
   friends: [friendSchema],
   greeting: String,
-  favoriteFruit: String,
+  favoriteFruit: {
+    type:String,
+    enum: ['apple', 'banana', 'strawberry'],
+  },
 },{
   toObject: {getters: true, setters: true},
   toJSON: {getters: true, setters: true},

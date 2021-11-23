@@ -18,7 +18,10 @@ const FLUSH_REDIS_ASYNC = promisify(redisClient.flushdb).bind(redisClient);
        
     const getAllUsers = await User.find();
 
-    if(getAllUsers.length !==0) throw new Error("Unable to insert data, data already exists")
+    if(getAllUsers.length !==0){
+      console.log("........Unable to insert data, data already exist........");
+      return this.updateData(); //if db already has data the data is updated. if not the data is inserted
+    }
 
     const users = await usersCollection();
 
@@ -44,7 +47,8 @@ module.exports.updateData = async()=> {
       const users = await usersCollection();
       const allDBUsers= await User.find();
       const deletedUsers = getDeletedUsers(users, allDBUsers);
-      
+     
+      console.log("........Updating DB........");
       if(deletedUsers.length >0){  //if some prev users were deleted from the API we need to remove them from our local db
           for(const deletedUser of deletedUsers){
              const removeUser = await User.findOneAndDelete({"_id": deletedUser["_id"]});
@@ -54,7 +58,7 @@ module.exports.updateData = async()=> {
 
       for (const user of users) {
         const updatedUser = await User.findOneAndReplace({"_id":user["_id"]}, user, {new: true});
-       
+        
         if(!updatedUser){
             const newUser = await User.create(user); //if some new user has been added to the collection but the datadb we need to added to mongodb
           
@@ -63,9 +67,8 @@ module.exports.updateData = async()=> {
     
     console.log("........Flushing redis cache........");
     const flushResponse = await FLUSH_REDIS_ASYNC();
-    console.log(flushResponse)
     console.log("........Flush completed........");
-
+    console.log("........DB has been updated........");
     }
     catch(err){
       console.log(err);

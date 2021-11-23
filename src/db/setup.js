@@ -8,7 +8,6 @@ const dataUtils = require("./utilsData")
 mongoose
   .connect("mongodb://mongo/usersdb")
   .then(async (db) => {
-    console.log(dataUtils)
-    dataUtils.loadDataIntoDB();
+      dataUtils.loadDataIntoDB();
   })
   .catch((err) => console.log(err));

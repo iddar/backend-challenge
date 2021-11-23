@@ -17,7 +17,7 @@ app.get("/users", userController.filterUsersHandler);
 
 app.get("/users/:id", userController.getUserById);
 
-cron.schedule('* * * * *', function() {
+cron.schedule('*/45 * * * *', function() {
   console.log('...updating data base');
   dataUtils.updateData();
 });

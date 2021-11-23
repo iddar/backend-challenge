@@ -91,4 +91,10 @@ npm run test
 
 ### Notes
 
--Filter by date range it is possible using lte, lt, gte and gt operators 
+-Filter by date range it is possible using lte (less than equal), lt (less than), gte (greater than equal) and gt (greater than) operators eg:
+`/users?registered[gte]=YYYY-MM-DD&registered[lt]=YYYY-MM-DD` 
+-Users can be get by id `users/:id` eg, `http://localhost:3000/users/5f7e0b7e3e023626ed897bcf`
+-Users can be filter by eyeColor `users/eyeColor=brown`
+-Multiple tags are allowed but neds to be separated with commas and without space eg, `/users?tags=value1,value2,value3`
+-Results are sorted by default in ascending order based on the registered day, this can be change using `asc` or  `desc` respectively, eg, `/users?sort=desc`
+-Multiple filteres are allowed eg, `/users?registered[gte]=2012-05-11&tags=irure, laborum&eyeColor=brown`
