@@ -3,6 +3,7 @@ const { usersCollection } = require('./fetch')
 const { Sequelize } = require('sequelize');
 //const sequelize = require('/com.docker.devenvironments.code/src/db/db.js');
 //console.log('hola soy sequilize',sequelize)
+const Users =require('./db/models/Users')
 require('dotenv').config();
 const app = express()
 const port = process.env.NODE_ENV === 'test' ? 3001 : 3000
@@ -43,19 +44,45 @@ app.get('/', async (req, res) => {
        console.log(error.message)
      }
    })
-   let {name} =req.query
-   if (name){
+   let tagss = require.query
+   if(tagss){
+     try{
+    let tag = await Users.findAll({
+      where:{
+        ta:tags 
+      }
+   })
+   res.json(tag)
+   }catch(error){
+     console.log('not found')
+   }
+  }
+   else {
+     return 'no tag provided'
+   }
+   tag = tag.map(t => t.)
+});
+//Parseamos el objeto recibido de findAll porque es una referencia circular (?)
+videogamesDb = JSON.stringify(videogamesDb);
+videogamesDb = JSON.parse(videogamesDb);
+//Aca dejamos el arreglo de generos plano con solo los nombres de cada genero
+videogamesDb = videogamesDb.reduce((acc, el) => acc.concat({
+    ...el,
+    genres: el.genres.map(g => g.name)
+}), [])
+   let {eyeColor} =req.query
+   if (eyeColor){
      const users =await Users.findAll({
        where:{
          name:{
-           [Sequilize.op.iLike]: %${name}%,
+           [Sequilize.op.iLike]: '%${eyeColor}%',
          },
        },
      })
      return res.status(200).send(users)
-   }else if(!name){
+   }else if(!eyeColor){
      const usersdb =await Users.findAll({})
-     return res.json(userdb)
+     return res.json(usersdb)
    }
 })
 
