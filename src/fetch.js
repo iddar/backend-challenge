@@ -41,8 +41,14 @@ module.exports = {
    * @returns {Promise<Array<user>>}
    */
   async usersCollection () {
-    const blob = await fetch('http://api:8000')
+    const blob = await fetch('http://localhost:8000/')
     const data = await blob.json()
+    console.log('hola soy data',data)
     return data
   }
 }
+//npm run dev # run the "dev" package script
+// Digest: sha256:1fe27b334443793af98d7eb320ad6f9f30fcc9bc068f545cb46ec01cefe9c8ee
+// Status: Downloaded newer image for postgres:latest
+// docker.io/library/postgres:latest
+// docker-compose up -d

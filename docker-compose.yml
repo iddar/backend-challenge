@@ -4,8 +4,8 @@ services:
     build:
       context: src/
     volumes:
-      - ./src:/app
-      - /app/node_modules
+     - ./src:/app
+     - /app/node_modules
     ports:
       - '3000:3000'
     links:
@@ -21,7 +21,25 @@ services:
       - /app/node_modules
     ports:
       - '8000:8000'
-    # environment:
-    #   - POSTGRES_USER=postgres
-    #   - POSTGRES_DB=commando
-    #   - POSTGRES_PASSWORD=example
+    environment:
+     SEQ_DB: challenge
+     SEQ_USER: postgres
+     SEQ_PW: Yaotzin29416
+     PORT: 5432
+     #DATABASE_URL: 
+      #- postgres://username:Yaotzin29416@db:5432/challenge
+     NODE_CONFIG: '{"DATABASE_URL":"postgres://postgres:Yaotzin29416@db:5432/challenge"}'
+  
+  db: 
+   image: postgres
+   #env_file:
+    #- database.env # configure postgres
+   volumes:
+    - ./src:/app
+    - /app/node_modules
+   ports:
+    - '5432:5432'
+   environment:
+    POSTGRES_USER: postgres
+    POSTGRES_DB: challenge
+    POSTGRES_PASSWORD: Yaotzin29416
